@@ -1,0 +1,1012 @@
+{
+  "instances": [
+    {
+      "id": "router",
+      "title": "Router",
+      "host": "192.168.189.1",
+      "port": 9100,
+      "enabled": true,
+      "tags": ["production", "web"],
+      "dashboard": {
+        "cards": [
+          {
+            "type": "value",
+            "title": "CPU",
+            "icon": "fa-microchip",
+            "metric": "cpu_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "cpu_info_format"
+            },
+            "format": "cpu_info"
+          },
+          {
+            "type": "value",
+            "title": "Memory",
+            "icon": "fa-memory",
+            "metric": "memory_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "memory_gb_format"
+            },
+            "format": "memory_gb"
+          },
+          {
+            "type": "value",
+            "title": "Disk",
+            "icon": "fa-hard-drive",
+            "metric": "disk_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "filesystem_gb_format",
+              "filter": "mountpoint=\"/\""
+            },
+            "format": "disk_gb"
+          },
+          {
+            "type": "value",
+            "title": "System Load",
+            "icon": "fa-chart-line",
+            "metric": "system_load",
+            "calculation": {
+              "type": "direct",
+              "metrics": ["node_load1", "node_load5", "node_load15"]
+            },
+            "format": "load"
+          }
+        ],
+        "charts": [
+          {
+            "type": "line",
+            "title": "CPU Usage Over Time",
+            "metrics": [
+              {
+                "name": "CPU Usage",
+                "calculation": {
+                  "type": "cpu_percentage",
+                  "metrics": ["node_cpu_seconds_total"]
+                },
+                "color": "#667eea",
+                "fill": true
+              }
+            ],
+            "yAxis": {
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            }
+          },
+          {
+            "type": "line",
+            "title": "Memory Usage Over Time",
+            "metrics": [
+              {
+                "name": "Memory Usage",
+                "calculation": {
+                  "type": "memory_percentage"
+                },
+                "color": "#f5576c",
+                "fill": true
+              }
+            ],
+            "yAxis": {
+              "min": 0,
+              "max": 100,
+              "unit": "%"
+            }
+          },
+          {
+            "type": "line",
+            "title": "Network Traffic - vtnet0 (WAN)",
+            "metrics": [
+              {
+                "name": "RX",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_receive_bytes_total",
+                  "filter": "device=\"vtnet0\""
+                },
+                "color": "#7eb26d",
+                "unit": "bits",
+                "fill": false
+              },
+              {
+                "name": "TX",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_transmit_bytes_total",
+                  "filter": "device=\"vtnet0\""
+                },
+                "color": "#ff9830",
+                "unit": "bits",
+                "fill": false
+              }
+            ],
+            "yAxis": {
+              "unit": "bits",
+              "dynamic": true
+            }
+          },
+          {
+            "type": "line",
+            "title": "Network Traffic - vtnet1 (LAN)",
+            "metrics": [
+              {
+                "name": "RX",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_receive_bytes_total",
+                  "filter": "device=\"vtnet1\""
+                },
+                "color": "#7eb26d",
+                "unit": "bits",
+                "fill": false
+              },
+              {
+                "name": "TX",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_transmit_bytes_total",
+                  "filter": "device=\"vtnet1\""
+                },
+                "color": "#ff9830",
+                "unit": "bits",
+                "fill": false
+              }
+            ],
+            "yAxis": {
+              "unit": "bits",
+              "dynamic": true
+            }
+          },
+          {
+            "type": "line",
+            "title": "Network Traffic - tun_wg1 (transit01)",
+            "metrics": [
+              {
+                "name": "RX",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_receive_bytes_total",
+                  "filter": "device=\"tun_wg1\""
+                },
+                "color": "#7eb26d",
+                "unit": "bits",
+                "fill": false
+              },
+              {
+                "name": "TX",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_transmit_bytes_total",
+                  "filter": "device=\"tun_wg1\""
+                },
+                "color": "#ff9830",
+                "unit": "bits",
+                "fill": false
+              }
+            ],
+            "yAxis": {
+              "unit": "bits",
+              "dynamic": true
+            }
+          },
+          {
+            "type": "line",
+            "title": "Disk I/O",
+            "metrics": [
+              {
+                "name": "Read",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_devstat_bytes_total",
+                  "filter": "device=\"da0\",type=\"read\""
+                },
+                "color": "#33b5e5",
+                "fill": false
+              },
+              {
+                "name": "Write",
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_devstat_bytes_total",
+                  "filter": "device=\"da0\",type=\"write\""
+                },
+                "color": "#9954bb",
+                "fill": false
+              }
+            ],
+            "yAxis": {
+              "unit": "bytes",
+              "dynamic": true
+            }
+          }
+        ],
+        "tables": [
+          {
+            "title": "System Information",
+            "icon": "fa-info-circle",
+            "columns": [
+              { "header": "Property", "field": "property", "width": "30%" },
+              { "header": "Value", "field": "value", "width": "70%" }
+            ],
+            "type": "system_info"
+          },
+          {
+            "title": "Filesystem Usage",
+            "icon": "fa-folder-open",
+            "columns": [
+              {
+                "header": "Mount Point",
+                "field": "mountpoint",
+                "width": "30%"
+              },
+              {
+                "header": "Device",
+                "field": "device",
+                "width": "25%"
+              },
+              {
+                "header": "Size",
+                "field": "size",
+                "format": "bytes",
+                "width": "15%"
+              },
+              {
+                "header": "Used",
+                "field": "used",
+                "format": "bytes",
+                "width": "15%"
+              },
+              {
+                "header": "Usage",
+                "field": "usage",
+                "format": "percentage",
+                "width": "15%"
+              }
+            ],
+            "metrics": {
+              "size": "node_filesystem_size_bytes",
+              "avail": "node_filesystem_avail_bytes"
+            },
+            "filter": "fstype!~\"tmpfs|devtmpfs|overlay\""
+          },
+          {
+            "title": "Network Interfaces",
+            "icon": "fa-network-wired",
+            "columns": [
+              {
+                "header": "Interface",
+                "field": "device",
+                "width": "20%"
+              },
+              {
+                "header": "RX Bytes",
+                "field": "rx_bytes",
+                "format": "bytes",
+                "width": "20%"
+              },
+              {
+                "header": "TX Bytes",
+                "field": "tx_bytes",
+                "format": "bytes",
+                "width": "20%"
+              },
+              {
+                "header": "RX Packets",
+                "field": "rx_packets",
+                "format": "number",
+                "width": "20%"
+              },
+              {
+                "header": "TX Packets",
+                "field": "tx_packets",
+                "format": "number",
+                "width": "20%"
+              }
+            ],
+            "metrics": {
+              "rx_bytes": "node_network_receive_bytes_total",
+              "tx_bytes": "node_network_transmit_bytes_total",
+              "rx_packets": "node_network_receive_packets_total",
+              "tx_packets": "node_network_transmit_packets_total"
+            },
+            "filter": "device!~\"lo|veth.*\""
+          }
+        ]
+      }
+    },
+    {
+      "id": "ryzen-pve01",
+      "title": "AMD Ryzen - Pve01",
+      "host": "192.168.189.14",
+      "port": 9100,
+      "enabled": true,
+      "tags": ["proxmox", "virtualization"],
+      "dashboard": {
+        "cards": [
+          {
+            "type": "value",
+            "title": "CPU",
+            "icon": "fa-microchip",
+            "metric": "cpu_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "cpu_info_format"
+            },
+            "format": "cpu_info"
+          },
+          {
+            "type": "value",
+            "title": "Memory",
+            "icon": "fa-memory",
+            "metric": "memory_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "memory_gb_format"
+            },
+            "format": "memory_gb"
+          },
+          {
+            "type": "value",
+            "title": "Disk",
+            "icon": "fa-hard-drive",
+            "metric": "disk_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "filesystem_gb_format",
+              "filter": "mountpoint=\"/\""
+            },
+            "format": "disk_gb"
+          },
+          {
+            "type": "value",
+            "title": "System Load",
+            "icon": "fa-chart-line",
+            "format": "load",
+            "calculation": {
+              "type": "direct",
+              "metrics": ["node_load1", "node_load5", "node_load15"]
+            }
+          }
+        ],
+        "charts": [
+          {
+            "type": "line",
+            "title": "CPU Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "CPU %",
+                "color": "#D3433E",
+                "fill": true,
+                "calculation": {
+                  "type": "cpu_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Memory Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "Memory %",
+                "color": "#7eb26d",
+                "fill": true,
+                "calculation": {
+                  "type": "memory_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Network Traffic",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "RX",
+                "color": "#7eb26d",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_receive_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              },
+              {
+                "name": "TX",
+                "color": "#D3433E",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_transmit_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Disk I/O",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "Read",
+                "color": "#508642",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_read_bytes_total"
+                }
+              },
+              {
+                "name": "Write",
+                "color": "#bf1b00",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_written_bytes_total"
+                }
+              }
+            ]
+          }
+        ],
+        "tables": [
+          {
+            "title": "Filesystem Usage",
+            "icon": "fa-hdd",
+            "columns": [
+              { "header": "Mount", "field": "mountpoint", "width": "30%" },
+              { "header": "Filesystem", "field": "fstype", "width": "15%" },
+              { "header": "Size", "field": "size", "format": "bytes", "width": "15%" },
+              { "header": "Used", "field": "used", "format": "bytes", "width": "15%" },
+              { "header": "Available", "field": "avail", "format": "bytes", "width": "15%" },
+              { "header": "Usage", "field": "usage", "format": "percentage", "width": "10%" }
+            ],
+            "metrics": {
+              "size": "node_filesystem_size_bytes",
+              "avail": "node_filesystem_avail_bytes"
+            },
+            "filter": "device!~\"tmpfs|devtmpfs\""
+          }
+        ]
+      }
+    },
+    {
+      "id": "xeon-pve02",
+      "title": "Xeon E5 Pve02",
+      "host": "192.168.189.51",
+      "port": 9100,
+      "enabled": true,
+      "tags": ["proxmox", "virtualization"],
+      "dashboard": {
+        "cards": [
+          {
+            "type": "value",
+            "title": "CPU",
+            "icon": "fa-microchip",
+            "metric": "cpu_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "cpu_info_format"
+            },
+            "format": "cpu_info"
+          },
+          {
+            "type": "value",
+            "title": "Memory",
+            "icon": "fa-memory",
+            "metric": "memory_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "memory_gb_format"
+            },
+            "format": "memory_gb"
+          },
+          {
+            "type": "value",
+            "title": "Disk",
+            "icon": "fa-hard-drive",
+            "metric": "disk_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "filesystem_gb_format",
+              "filter": "mountpoint=\"/\""
+            },
+            "format": "disk_gb"
+          },
+          {
+            "type": "value",
+            "title": "System Load",
+            "icon": "fa-chart-line",
+            "format": "load",
+            "calculation": {
+              "type": "direct",
+              "metrics": ["node_load1", "node_load5", "node_load15"]
+            }
+          }
+        ],
+        "charts": [
+          {
+            "type": "line",
+            "title": "CPU Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "CPU %",
+                "color": "#D3433E",
+                "fill": true,
+                "calculation": {
+                  "type": "cpu_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Memory Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "Memory %",
+                "color": "#7eb26d",
+                "fill": true,
+                "calculation": {
+                  "type": "memory_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Network Traffic",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "RX",
+                "color": "#7eb26d",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_receive_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              },
+              {
+                "name": "TX",
+                "color": "#D3433E",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_transmit_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Disk I/O",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "Read",
+                "color": "#508642",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_read_bytes_total"
+                }
+              },
+              {
+                "name": "Write",
+                "color": "#bf1b00",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_written_bytes_total"
+                }
+              }
+            ]
+          }
+        ],
+        "tables": [
+          {
+            "title": "Filesystem Usage",
+            "icon": "fa-hdd",
+            "columns": [
+              { "header": "Mount", "field": "mountpoint", "width": "30%" },
+              { "header": "Filesystem", "field": "fstype", "width": "15%" },
+              { "header": "Size", "field": "size", "format": "bytes", "width": "15%" },
+              { "header": "Used", "field": "used", "format": "bytes", "width": "15%" },
+              { "header": "Available", "field": "avail", "format": "bytes", "width": "15%" },
+              { "header": "Usage", "field": "usage", "format": "percentage", "width": "10%" }
+            ],
+            "metrics": {
+              "size": "node_filesystem_size_bytes",
+              "avail": "node_filesystem_avail_bytes"
+            },
+            "filter": "device!~\"tmpfs|devtmpfs\""
+          }
+        ]
+      }
+    },
+    {
+      "id": "storage-pve03",
+      "title": "Xeon E5 Pve03",
+      "host": "storage01.labservnet.de", 
+      "port": 9100,
+      "enabled": true,
+      "tags": ["proxmox", "virtualization"],
+      "dashboard": {
+        "cards": [
+          {
+            "type": "value",
+            "title": "CPU",
+            "icon": "fa-microchip",
+            "metric": "cpu_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "cpu_info_format"
+            },
+            "format": "cpu_info"
+          },
+          {
+            "type": "value",
+            "title": "Memory",
+            "icon": "fa-memory",
+            "metric": "memory_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "memory_gb_format"
+            },
+            "format": "memory_gb"
+          },
+          {
+            "type": "value",
+            "title": "Disk",
+            "icon": "fa-hard-drive",
+            "metric": "disk_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "filesystem_gb_format",
+              "filter": "mountpoint=\"/\""
+            },
+            "format": "disk_gb"
+          },
+          {
+            "type": "value",
+            "title": "System Load",
+            "icon": "fa-chart-line",
+            "format": "load",
+            "calculation": {
+              "type": "direct",
+              "metrics": ["node_load1", "node_load5", "node_load15"]
+            }
+          }
+        ],
+        "charts": [
+          {
+            "type": "line",
+            "title": "CPU Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "CPU %",
+                "color": "#D3433E",
+                "fill": true,
+                "calculation": {
+                  "type": "cpu_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Memory Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "Memory %",
+                "color": "#7eb26d",
+                "fill": true,
+                "calculation": {
+                  "type": "memory_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Network Traffic",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "RX",
+                "color": "#7eb26d",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_receive_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              },
+              {
+                "name": "TX",
+                "color": "#D3433E",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_transmit_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Disk I/O",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "Read",
+                "color": "#508642",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_read_bytes_total"
+                }
+              },
+              {
+                "name": "Write",
+                "color": "#bf1b00",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_written_bytes_total"
+                }
+              }
+            ]
+          }
+        ],
+        "tables": [
+          {
+            "title": "Filesystem Usage",
+            "icon": "fa-hdd",
+            "columns": [
+              { "header": "Mount", "field": "mountpoint", "width": "30%" },
+              { "header": "Filesystem", "field": "fstype", "width": "15%" },
+              { "header": "Size", "field": "size", "format": "bytes", "width": "15%" },
+              { "header": "Used", "field": "used", "format": "bytes", "width": "15%" },
+              { "header": "Available", "field": "avail", "format": "bytes", "width": "15%" },
+              { "header": "Usage", "field": "usage", "format": "percentage", "width": "10%" }
+            ],
+            "metrics": {
+              "size": "node_filesystem_size_bytes",
+              "avail": "node_filesystem_avail_bytes"
+            },
+            "filter": "device!~\"tmpfs|devtmpfs\""
+          }
+        ]
+      }
+    },
+    {
+      "id": "coppertime-node",
+      "title": "Xeon E5 Coppertime node",
+      "host": "coppertime.int.labservnet.de", 
+      "port": 9100,
+      "enabled": true,
+      "tags": ["proxmox", "virtualization"],
+      "dashboard": {
+        "cards": [
+          {
+            "type": "value",
+            "title": "CPU",
+            "icon": "fa-microchip",
+            "metric": "cpu_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "cpu_info_format"
+            },
+            "format": "cpu_info"
+          },
+          {
+            "type": "value",
+            "title": "Memory",
+            "icon": "fa-memory",
+            "metric": "memory_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "memory_gb_format"
+            },
+            "format": "memory_gb"
+          },
+          {
+            "type": "value",
+            "title": "Disk",
+            "icon": "fa-hard-drive",
+            "metric": "disk_usage",
+            "precision": 1,
+            "calculation": {
+              "type": "filesystem_gb_format",
+              "filter": "mountpoint=\"/\""
+            },
+            "format": "disk_gb"
+          },
+          {
+            "type": "value",
+            "title": "System Load",
+            "icon": "fa-chart-line",
+            "format": "load",
+            "calculation": {
+              "type": "direct",
+              "metrics": ["node_load1", "node_load5", "node_load15"]
+            }
+          }
+        ],
+        "charts": [
+          {
+            "type": "line",
+            "title": "CPU Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "CPU %",
+                "color": "#D3433E",
+                "fill": true,
+                "calculation": {
+                  "type": "cpu_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Memory Usage",
+            "yAxis": {
+              "min": 0,
+              "max": 100
+            },
+            "metrics": [
+              {
+                "name": "Memory %",
+                "color": "#7eb26d",
+                "fill": true,
+                "calculation": {
+                  "type": "memory_percentage"
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Network Traffic",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "RX",
+                "color": "#7eb26d",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_receive_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              },
+              {
+                "name": "TX",
+                "color": "#D3433E",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_network_transmit_bytes_total",
+                  "filter": "device!~\"lo|veth.*\""
+                }
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "title": "Disk I/O",
+            "yAxis": {
+              "min": 0,
+              "dynamic": true,
+              "unit": "bytes"
+            },
+            "metrics": [
+              {
+                "name": "Read",
+                "color": "#508642",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_read_bytes_total"
+                }
+              },
+              {
+                "name": "Write",
+                "color": "#bf1b00",
+                "fill": false,
+                "calculation": {
+                  "type": "rate",
+                  "metric": "node_disk_written_bytes_total"
+                }
+              }
+            ]
+          }
+        ],
+        "tables": [
+          {
+            "title": "Filesystem Usage",
+            "icon": "fa-hdd",
+            "columns": [
+              { "header": "Mount", "field": "mountpoint", "width": "30%" },
+              { "header": "Filesystem", "field": "fstype", "width": "15%" },
+              { "header": "Size", "field": "size", "format": "bytes", "width": "15%" },
+              { "header": "Used", "field": "used", "format": "bytes", "width": "15%" },
+              { "header": "Available", "field": "avail", "format": "bytes", "width": "15%" },
+              { "header": "Usage", "field": "usage", "format": "percentage", "width": "10%" }
+            ],
+            "metrics": {
+              "size": "node_filesystem_size_bytes",
+              "avail": "node_filesystem_avail_bytes"
+            },
+            "filter": "device!~\"tmpfs|devtmpfs\""
+          }
+        ]
+      }
+    }
+  ]
+}

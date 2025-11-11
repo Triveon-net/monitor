@@ -1,0 +1,82 @@
+{
+  "check_interval": 60,
+  "ping_timeout": 2,
+  "tcp_timeout": 2,
+  "icmp_count": 1,
+  "retention_days": 30,
+  "enable_icmp": true,
+  "enable_tcp": true,
+  "enable_udp": false,
+  "services": [
+    {
+      "id": "web-server",
+      "name": "Router",
+      "host": "192.168.189.1",
+      "port": 8929,
+      "protocol": "tcp",
+      "enabled": true,
+      "icon": "fa-globe",
+      "tags": ["web", "networking", "router"]
+    },
+    {
+      "id": "ns1.labservnet.de",
+      "name": "Nameserver 1",
+      "host": "5.231.82.57",
+      "port": 53,
+      "protocol": "tcp",
+      "enabled": true,
+      "icon": "fa-network-wired",
+      "tags": ["dns", "infrastructure"]
+    },
+        {
+      "id": "ns2.labservnet.de",
+      "name": "Nameserver 1",
+      "host": "5.231.82.58",
+      "port": 53,
+      "protocol": "tcp",
+      "enabled": true,
+      "icon": "fa-network-wired",
+      "tags": ["dns", "infrastructure"]
+    },
+    {
+      "id": "proxy1",
+      "name": "Main Proxy (Novacloud hosting) IP 1",
+      "host": "87.239.129.115",
+      "port": 22,
+      "protocol": "tcp",
+      "enabled": true,
+      "icon": "fa-terminal",
+      "tags": ["proxy", "network", "infrastructure"]
+    },
+    {
+      "id": "proxy1.1",
+      "name": "Main Proxy (Novacloud hosting) IP 2",
+      "host": "87.239.129.144",
+      "port": 22,
+      "protocol": "tcp",
+      "enabled": true,
+      "icon": "fa-terminal",
+      "tags": ["proxy", "network", "infrastructure"]
+    },
+    {
+      "id": "fectra.net",
+      "name": "Gameserver - Fectra.net",
+      "host": "87.239.129.115",
+      "port": 25565,
+      "protocol": "tcp",
+      "enabled": true,
+      "icon": "fa-terminal",
+      "tags": ["gameserver", "minecraft", "network"]
+    },
+    {
+      "id": "anysql",
+      "name": "AnySQL - Our SQL Cluster",
+      "host": "192.168.189.206",
+      "port": 3002,
+      "protocol": "tcp",
+      "enabled": true,
+      "icon": "fa-database",
+      "tags": ["gameserver", "minecraft", "network"]
+    }
+  ]
+}
